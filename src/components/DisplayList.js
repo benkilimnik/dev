@@ -4,7 +4,6 @@ import Button from "react-bootstrap/Button"
 import Col from "react-bootstrap/Col"
 import Container from "react-bootstrap/Container"
 import Row from "react-bootstrap/Row"
-import Dropdown from "react-bootstrap/Dropdown"
 
 class DisplayList extends Component {
   state = {
@@ -13,7 +12,7 @@ class DisplayList extends Component {
 
   // remove song from checkedOut array within the state
   removeSong = (song) => {
-    const checkedOut = this.state.checkedOut.filter((s) => s.name !== song.name)
+    const checkedOut = this.state.checkedOut.filter((s) => s.id !== song.id)
     this.setState({
       checkedOut,
     })
@@ -21,37 +20,12 @@ class DisplayList extends Component {
 
   // place song in checkedOut array within the state
   addSong = (song) => {
-    if (
-      this.state.checkedOut.filter((s) => s.name === song.name).length === 0
-    ) {
+    if (this.state.checkedOut.filter((s) => s.id === song.id).length === 0) {
       let checkedOut = this.state.checkedOut.concat(song)
       this.setState({
         checkedOut,
       })
     }
-  }
-
-  // generate html cards for all songs
-  htmlAllSongs = (song) => {
-    return (
-      <Card key={song.id}>
-        <Card.Img
-          variant="top"
-          src={song.image}
-          // src={require(`../assets/${song.image}.jpg`)}
-        />
-        <Card.Body>
-          <Card.Title>{song.name}</Card.Title>
-          <Card.Text>Genre: {song.genre}</Card.Text>
-          <Card.Text>Price: {song.price}</Card.Text>
-          <Card.Text>Days since release: {song.days}</Card.Text>
-        </Card.Body>
-        <Button variant="success" onClick={() => this.addSong(song)}>
-          Add to My Songs
-        </Button>
-        <Dropdown.Divider />
-      </Card>
-    )
   }
 
   // generate html cards for all songs added by user
@@ -71,12 +45,27 @@ class DisplayList extends Component {
       </Card>
     )
   }
+  // generate html cards for all songs
+  htmlAllSongs = (song) => {
+    return (
+      <Card key={song.id}>
+        <Card.Img variant="top" src={song.image} />
+        <Card.Body>
+          <Card.Title>{song.name}</Card.Title>
+          <Card.Text>Genre: {song.genre}</Card.Text>
+          <Card.Text>Price: {song.price}</Card.Text>
+          <Card.Text>Days since release: {song.days}</Card.Text>
+        </Card.Body>
+        <Button variant="success" onClick={() => this.addSong(song)}>
+          Add to My Songs
+        </Button>
+      </Card>
+    )
+  }
 
   render() {
     const all = this.props.songsToShow
-    const allHtml = all.map(this.htmlAllSongs)
     const checkedOut = this.state.checkedOut
-    const checkedOutHtml = checkedOut.map(this.htmlCheckedOutSongs)
     let priceTotal = 0
     const findPriceTotal = this.state.checkedOut.forEach((n) => {
       priceTotal += n.price
@@ -92,12 +81,12 @@ class DisplayList extends Component {
               </Card.Header>
               <Card.Body>{all.length}</Card.Body>
             </Card>
-            {allHtml}
+            {all.map(this.htmlAllSongs)}
           </Col>
           <Col>
             <h1>My Songs</h1>
             <h2>${priceTotal}</h2>
-            {checkedOutHtml}
+            {checkedOut.map(this.htmlCheckedOutSongs)}
           </Col>
         </Row>
       </Container>

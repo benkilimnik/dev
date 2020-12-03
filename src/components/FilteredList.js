@@ -59,9 +59,9 @@ class FilteredList extends Component {
 
     // sort by price (ascending or descending)
     if (price === "ascending") {
-      toRefresh = toRefresh.sort((x, y) => (x.price > y.price ? 1 : -1))
+      toRefresh = toRefresh.sort((x, y) => x.price - y.price)
     } else if (price === "descending") {
-      toRefresh = toRefresh.sort((x, y) => (x.price < y.price ? 1 : -1))
+      toRefresh = toRefresh.sort((x, y) => y.price - x.price)
     }
 
     // filter the state by genre
