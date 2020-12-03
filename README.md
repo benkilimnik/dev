@@ -18,6 +18,6 @@ This component renders the filtered cards and handles the logic for adding and r
 
 Data is passed from the App component to FilteredList which handles the filtering and sorting and then to DisplayList which handles the aggregator
 
-## How user can trigger state changes
+## How the user can trigger state changes
 
 There are intuitive dropdown menus for the sorting and filtering options along with buttons at the bottom of each song card that allow users to add a song to the aggregator (My Songs section)

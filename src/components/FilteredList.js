@@ -8,15 +8,12 @@ import DropdownButton from "react-bootstrap/DropdownButton"
 import Container from "react-bootstrap/Container"
 import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/Col"
-import Card from "react-bootstrap/Card"
-
-import "bootstrap/dist/css/bootstrap.min.css"
 
 class FilteredList extends Component {
   state = {
+    price: "ascending",
     genre: "all",
     days: "all",
-    price: "ascending",
     songsToShow: this.props.allSongs,
   }
 
@@ -60,6 +57,13 @@ class FilteredList extends Component {
   refresh = (genre, days, price) => {
     let toRefresh = this.props.allSongs
 
+    // sort by price (ascending or descending)
+    if (price === "ascending") {
+      toRefresh = toRefresh.sort((x, y) => (x.price > y.price ? 1 : -1))
+    } else if (price === "descending") {
+      toRefresh = toRefresh.sort((x, y) => (x.price < y.price ? 1 : -1))
+    }
+
     // filter the state by genre
     if (genre === "rock") {
       toRefresh = toRefresh.filter((i) => i.genre === "rock")
@@ -76,13 +80,6 @@ class FilteredList extends Component {
       toRefresh = toRefresh.filter((i) => i.days > 0 && i.days < 8)
     } else if (days === "this month") {
       toRefresh = toRefresh.filter((i) => i.days > 0)
-    }
-
-    // sort by price (ascending or descending)
-    if (price === "ascending") {
-      toRefresh = toRefresh.sort((x, y) => (x.price > y.price ? 1 : -1))
-    } else if (price === "descending") {
-      toRefresh = toRefresh.sort((x, y) => (x.price < y.price ? 1 : -1))
     }
 
     this.setState({

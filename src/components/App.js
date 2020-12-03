@@ -1,6 +1,5 @@
 import React from "react"
 import FilteredList from "./FilteredList"
-import "../stylesheets/App.scss"
 
 import {
   one,
